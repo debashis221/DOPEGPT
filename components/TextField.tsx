@@ -1,11 +1,16 @@
-import { MouseEventHandler, memo } from "react";
+import { UseWhisperTranscript } from "@chengsokdara/use-whisper/dist/types";
+import { MouseEventHandler, memo, Dispatch, SetStateAction } from "react";
 
 const TextField = ({
   onSpeakClick,
   recording,
+  transcript,
+  setFetching,
 }: {
   onSpeakClick: MouseEventHandler;
   recording: boolean;
+  transcript: UseWhisperTranscript;
+  setFetching: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <label className="relative block">
@@ -13,6 +18,12 @@ const TextField = ({
         className="h-[3.5rem] min-w-[50vw] rounded-full bg-gray-900 px-6 py-2 drop-shadow-md focus:outline-none"
         placeholder="Enter your questions here..."
         type="text"
+        defaultValue={transcript.text}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            setFetching(true);
+          }
+        }}
       />
       <span
         className="absolute inset-y-0 right-0 flex items-center pr-3"
